@@ -573,7 +573,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _offset: {x: 0, y: 2.5, z: -7}
-  player: {fileID: 228280307}
+  _player: {fileID: 228280307}
 --- !u!1 &872242253
 GameObject:
   m_ObjectHideFlags: 0
@@ -689,7 +689,7 @@ MonoBehaviour:
   _waypoints:
   - {fileID: 2005712616}
   - {fileID: 959142784}
-  _minInaccuracy: 0.4
+  _minInaccuracySqr: 0.4
 --- !u!114 &872242259
 MonoBehaviour:
   m_ObjectHideFlags: 0

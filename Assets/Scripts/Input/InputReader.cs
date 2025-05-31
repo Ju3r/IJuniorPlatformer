@@ -2,17 +2,15 @@ using UnityEngine;
 
 public class InputReader : MonoBehaviour
 {
-    private const string HorizontalAxis = "Horizontal";
-
     private bool _isJump;
-
+    private KeyCode _jumpKey = KeyCode.W;
     public float Direction {  get; private set; }
 
     private void Update()
     {
-        Direction = Input.GetAxis(HorizontalAxis);
+        Direction = Input.GetAxis(ConstantData.HorizontalAxis);
 
-        if (Input.GetKeyDown(KeyCode.W))
+        if (Input.GetKeyDown(_jumpKey))
         {
             _isJump = true;
         }
