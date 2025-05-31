@@ -25,11 +25,13 @@ public class Player : MonoBehaviour
     private void OnEnable()
     {
         _collector.CoinCollected += OnCoinCollected;
+        _inputReader.OnJumpPressed += OnJumpPressed;
     }
 
     private void OnDisable()
     {
         _collector.CoinCollected -= OnCoinCollected;
+        _inputReader.OnJumpPressed -= OnJumpPressed;
     }
 
     private void Update()
@@ -41,13 +43,16 @@ public class Player : MonoBehaviour
     {
         if (_inputReader.Direction != _lackOfMovement)
             _mover.Move(_inputReader.Direction);
-
-        if (_inputReader.GetIsJump() && _groundDetector.IsGround)
-            _mover.Jump();
     }
 
     public void OnCoinCollected(float value)
     {
         _score.Add(value);
+    }
+
+    private void OnJumpPressed()
+    {
+        if (_groundDetector.IsGround)
+            _mover.Jump();
     }
 }

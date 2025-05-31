@@ -99,9 +99,4 @@ public class CoinSpawner : MonoBehaviour
         _allCoins.Remove(coin);
         coin.Destroy();
     }
-
-    private bool IsInPool(Coin coin)
-    {
-        return _allCoins.Contains(coin);
-    }
 }

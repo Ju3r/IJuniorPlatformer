@@ -1,9 +1,12 @@
+using System;
 using UnityEngine;
 
 public class InputReader : MonoBehaviour
 {
-    private bool _isJump;
     private KeyCode _jumpKey = KeyCode.W;
+
+    public event Action OnJumpPressed;
+
     public float Direction {  get; private set; }
 
     private void Update()
@@ -12,15 +15,7 @@ public class InputReader : MonoBehaviour
 
         if (Input.GetKeyDown(_jumpKey))
         {
-            _isJump = true;
+            OnJumpPressed?.Invoke();
         }
-    }
-
-    public bool GetIsJump()
-    {  
-        bool isJump = _isJump;
-        _isJump = false;
-
-        return isJump; 
     }
 }

@@ -9,7 +9,7 @@ public class PlayerMover : MonoBehaviour
     private Flipper _flipper;
     private Rigidbody2D _rigidbody;
 
-    private void Start()
+    private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody2D>();
         _flipper = GetComponent<Flipper>();
