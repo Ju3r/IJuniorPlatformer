@@ -4,7 +4,7 @@ using UnityEngine;
 public class EnemyPatrol : MonoBehaviour
 {
     [SerializeField] private Waypoint[] _waypoints;
-    [SerializeField] private float _minInaccuracy = 0.4f;
+    [SerializeField] private float _minInaccuracySqr = 0.4f;
 
     private EnemyMover _mover;
     private Transform _targetPoint;
@@ -22,9 +22,11 @@ public class EnemyPatrol : MonoBehaviour
 
     public void Patrol()
     {
-        Vector2 direction = (_targetPoint.position - transform.position).normalized;
+        Vector2 offset = _targetPoint.position - transform.position; 
+        Vector2 direction = offset.normalized;
+        float distanceSqr = offset.sqrMagnitude;
 
-        if (Vector2.Distance(transform.position, _targetPoint.position) < _minInaccuracy)
+        if (distanceSqr < _minInaccuracySqr)
         {
             _currentPointIndex = ++_currentPointIndex % _waypoints.Length;
             _targetPoint = _waypoints[_currentPointIndex].transform;

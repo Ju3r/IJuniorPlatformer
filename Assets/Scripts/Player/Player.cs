@@ -27,6 +27,11 @@ public class Player : MonoBehaviour
         _collector.CoinCollected += OnCoinCollected;
     }
 
+    private void OnDisable()
+    {
+        _collector.CoinCollected -= OnCoinCollected;
+    }
+
     private void Update()
     {
         _animation.SetSpeed(Mathf.Abs(_inputReader.Direction));

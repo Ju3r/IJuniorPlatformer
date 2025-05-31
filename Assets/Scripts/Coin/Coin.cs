@@ -4,10 +4,11 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class Coin : MonoBehaviour 
 {
-    public event Action<Coin> Collected;
+    [SerializeField] private bool _isCollected = false;
 
     private Rigidbody2D _rigidbody;
-    [SerializeField] private bool _isCollected = false;
+
+    public event Action<Coin> Collected;
 
     [field: SerializeField] public float Value { get; private set; } = 1;
 
