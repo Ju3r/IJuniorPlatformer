@@ -8,7 +8,7 @@ public class CoinSpawner : MonoBehaviour
     [SerializeField] private Coin _prefab;
     [SerializeField] private Transform _coinContainer;
     [SerializeField] private int _poolCapacity = 5;  
-    [SerializeField] private int _poolMaxSize = 6;  
+    [SerializeField] private int _poolMaxSize = 20;  
     [SerializeField] private float _minForce = 5f; 
     [SerializeField] private float _maxForce = 10f; 
     [SerializeField] private float _minAngle = 0f;  
@@ -23,7 +23,7 @@ public class CoinSpawner : MonoBehaviour
     {
         _pool = new ObjectPool<Coin>(
             createFunc: () => Create(),
-            actionOnGet: coin => ActionOnGet(coin),
+            actionOnGet: coin => GetFromPool(coin),
             actionOnRelease: coin => coin.gameObject.SetActive(false),
             actionOnDestroy: coin => Destroy(coin),
             collectionCheck : true,
@@ -57,7 +57,6 @@ public class CoinSpawner : MonoBehaviour
     {
         Coin coin = Instantiate(_prefab);
         _allCoins.Add(coin);
-        coin.Collected += OnCollected;
 
         return coin;
     }
@@ -68,15 +67,17 @@ public class CoinSpawner : MonoBehaviour
 
         while (_isActive)
         {
-            _pool.Get();
+            if (_pool.CountActive < _poolMaxSize)
+                _pool.Get();
 
             yield return spawnWait;
         }
     }
 
-    private void ActionOnGet(Coin coin)
+    private void GetFromPool(Coin coin)
     {
         coin.Init(_coinContainer, transform.position);
+        coin.Collected += OnCollected;
 
         float angle = Random.Range(_minAngle, _maxAngle);
         float force = Random.Range(_minForce, _maxForce);
@@ -88,6 +89,7 @@ public class CoinSpawner : MonoBehaviour
 
     private void OnCollected(Coin coin)
     {
+        coin.Collected -= OnCollected;
         _pool.Release(coin);
     }
 
@@ -96,5 +98,10 @@ public class CoinSpawner : MonoBehaviour
         coin.Collected -= OnCollected;
         _allCoins.Remove(coin);
         coin.Destroy();
+    }
+
+    private bool IsInPool(Coin coin)
+    {
+        return _allCoins.Contains(coin);
     }
 }

@@ -1,22 +1,18 @@
 using System;
 using UnityEngine;
 
-[RequireComponent(typeof(CoinCollissionHandler), typeof(Rigidbody))]
+[RequireComponent(typeof(Rigidbody2D))]
 public class Coin : MonoBehaviour 
 {
     public event Action<Coin> Collected;
 
-    private CoinCollissionHandler _collissionHandler;
     private Rigidbody2D _rigidbody;
-    private bool _isCollected = false;
+    [SerializeField] private bool _isCollected = false;
 
     [field: SerializeField] public float Value { get; private set; } = 1;
 
     private void Awake()
     {
-        _collissionHandler = GetComponent<CoinCollissionHandler>();
-        _collissionHandler.Init(this);
-
         _rigidbody = GetComponent<Rigidbody2D>();
     }
 
@@ -43,7 +39,7 @@ public class Coin : MonoBehaviour
         _rigidbody.AddForce(direction * force, forceMode);
     }
 
-    public void GetCollected()
+    public void Collect()
     {
         if (_isCollected) 
             return;

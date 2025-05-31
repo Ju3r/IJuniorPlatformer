@@ -1,20 +1,18 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(EnemyMover))]
 public class EnemyPatrol : MonoBehaviour
 {
     [SerializeField] private Waypoint[] _waypoints;
-    [SerializeField] private float _moveSpeed = 2f;
     [SerializeField] private float _minInaccuracy = 0.4f;
 
+    private EnemyMover _mover;
     private Transform _targetPoint;
     private int _currentPointIndex = 0;
-    private Rigidbody2D _rigidbody;
 
     private void Awake()
     {
-        _rigidbody = GetComponent<Rigidbody2D>();
+        _mover = GetComponent<EnemyMover>();
     }
 
     private void Start()
@@ -22,16 +20,16 @@ public class EnemyPatrol : MonoBehaviour
         _targetPoint = _waypoints[_currentPointIndex].transform;
     }
 
-    private void FixedUpdate()
+    public void Patrol()
     {
         Vector2 direction = (_targetPoint.position - transform.position).normalized;
-
-        _rigidbody.velocity = new Vector2(direction.x * _moveSpeed, _rigidbody.velocity.y);
 
         if (Vector2.Distance(transform.position, _targetPoint.position) < _minInaccuracy)
         {
             _currentPointIndex = ++_currentPointIndex % _waypoints.Length;
             _targetPoint = _waypoints[_currentPointIndex].transform;
         }
+
+        _mover.Move(direction.x);
     }
 }

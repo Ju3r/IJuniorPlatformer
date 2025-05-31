@@ -1,6 +1,7 @@
 using UnityEngine;
 
 [RequireComponent (typeof(InputReader), typeof(PlayerMover), typeof(PlayerAnimation))]
+[RequireComponent (typeof(PlayerCollector))]
 public class Player : MonoBehaviour
 {
     [SerializeField] private GroundDetector _groundDetector; 
@@ -9,6 +10,7 @@ public class Player : MonoBehaviour
     private InputReader _inputReader;
     private PlayerMover _mover;
     private PlayerAnimation _animation;
+    private PlayerCollector _collector;
 
     private float _lackOfMovement = 0;
 
@@ -17,6 +19,12 @@ public class Player : MonoBehaviour
         _inputReader = GetComponent<InputReader>();
         _mover = GetComponent<PlayerMover>();
         _animation = GetComponent<PlayerAnimation>();
+        _collector = GetComponent<PlayerCollector>();
+    }
+
+    private void OnEnable()
+    {
+        _collector.CoinCollected += OnCoinCollected;
     }
 
     private void Update()
@@ -33,7 +41,7 @@ public class Player : MonoBehaviour
             _mover.Jump();
     }
 
-    public void CollectCoin(float value)
+    public void OnCoinCollected(float value)
     {
         _score.Add(value);
     }

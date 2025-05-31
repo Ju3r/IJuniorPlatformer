@@ -2,11 +2,9 @@ using UnityEngine;
 
 public class PlayerAnimation : MonoBehaviour
 {
-    private const string _speedParametr = "Speed";
-
     [SerializeField] private Animator _animator;
 
-    private int _speedHash = Animator.StringToHash(_speedParametr);
+    private int _speedHash = Animator.StringToHash(ConstantData.SpeedParametr);
 
     public void SetSpeed(float value)
     {
